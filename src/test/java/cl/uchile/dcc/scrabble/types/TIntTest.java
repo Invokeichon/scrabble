@@ -13,7 +13,7 @@ class TIntTest {
     private TInt tst;
 
     @BeforeEach
-    void constructorTest() {
+    void setUp() {
         tst = new TInt(value);
     }
 

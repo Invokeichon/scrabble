@@ -11,7 +11,7 @@ class TStringTest {
     private TString tst;
 
     @BeforeEach
-    void constructorTest() {
+    void setUp() {
         tst = new TString(value);
     }
 

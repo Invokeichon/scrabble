@@ -12,7 +12,7 @@ class TFloatTest {
     private TFloat tst;
 
     @BeforeEach
-    void constructorTest() {
+    void setUp() {
         tst = new TFloat(value);
     }
 

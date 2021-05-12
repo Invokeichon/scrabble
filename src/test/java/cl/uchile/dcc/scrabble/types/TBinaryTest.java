@@ -11,7 +11,7 @@ class TBinaryTest {
     private TBinary tst;
 
     @BeforeEach
-    void constructorTest() {
+    void setUp() {
         tst = new TBinary(value);
     }
 

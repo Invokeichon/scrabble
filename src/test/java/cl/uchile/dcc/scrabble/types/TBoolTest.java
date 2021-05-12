@@ -11,7 +11,7 @@ class TBoolTest {
     private TBool tst;
 
     @BeforeEach
-    void constructorTest() {
+    void setUp() {
         tst = new TBool(value);
     }
 
