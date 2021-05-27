@@ -12,6 +12,10 @@ public class TString implements IType{
         this.value = str;
     }
 
+    public TString add(IType stype){
+        return stype.addedByString(this);
+    }
+
     @Override
     public String toString() {
         return this.value;

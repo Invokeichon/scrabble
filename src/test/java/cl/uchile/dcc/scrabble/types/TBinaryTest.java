@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TBinaryTest {
     private String value = "1101001";
     private String value2 = "101001010";
+    private String uno = "01";
     private TBinary tst;
 
     @BeforeEach
@@ -21,14 +22,23 @@ class TBinaryTest {
     }
 
     @Test
-    void toFloat() {
-        tst.toFloat();
+    void toTFloat() {
+        tst.toTFloat();
         //se implementara despues
     }
 
     @Test
+    void negate() {
+        assertEquals(new TBinary("0010110"), tst.negate());
+    }
+
+    @Test
+    void toInt() {
+        assertEquals(1, new TBinary(uno).toInt());
+    }
+    @Test
     void toBinary() {
-        assertEquals(value, tst.toBinary());
+        assertEquals(new TBinary(value), tst.toTBinary());
     }
 
     @Test

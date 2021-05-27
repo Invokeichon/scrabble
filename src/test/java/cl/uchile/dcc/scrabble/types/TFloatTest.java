@@ -23,7 +23,7 @@ class TFloatTest {
 
     @Test
     void toFloat() {
-        assertEquals(value, tst.toFloat());
+        assertEquals(new TFloat(value), tst.toTFloat());
     }
 
     @Test

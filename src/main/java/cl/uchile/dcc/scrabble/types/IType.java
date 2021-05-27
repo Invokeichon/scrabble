@@ -12,8 +12,15 @@ public interface IType {
      */
     String toString();
 
+    default TString toTString() {
+        return new TString(this.toString());
+    }
+
+    default TString addedByString (TString str) {
+        return new TString(str.toString() + this.toString());
+    }
     /**
-     * Checkea si los objetos son iguales.
+     * Chequea si los objetos son iguales.
      * @return son iguales?
      */
     boolean equals(Object o);

@@ -21,8 +21,13 @@ class TBoolTest {
     }
 
     @Test
-    void toBool() {
-        assertEquals(value, tst.toBool());
+    void testNegate(){
+        assertEquals(new TBool(value2), tst.negate());
+    }
+
+    @Test
+    void toTBool() {
+        assertEquals(tst, tst.toTBool());
     }
 
     @Test

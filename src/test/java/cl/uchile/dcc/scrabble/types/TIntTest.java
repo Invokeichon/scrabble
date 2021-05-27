@@ -24,14 +24,18 @@ class TIntTest {
 
     @Test
     void toFloat() {
-        assertEquals(fval, tst.toFloat());
-        assertNotEquals(value2, tst.toFloat());
+        assertEquals(new TFloat(fval), tst.toTFloat());
     }
 
     @Test
     void toInt() {
-        assertEquals(value, tst.toInt());
-        assertNotEquals(value2, tst.toInt());
+        assertEquals(new TInt(value), tst.toTInt());
+        assertNotEquals(new TInt(value2), tst.toTInt());
+    }
+
+    @Test
+    void toBinary() {
+        assertEquals("00000000000000000000000000000001", new TInt(1).toBinary());
     }
 
     @Test
