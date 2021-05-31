@@ -1,32 +1,97 @@
 package cl.uchile.dcc.scrabble.types;
 
 /**
- * Interfaz que especifica que metodos *debe* implementar un
- * Scrabble number type (TInt, TFloat, TBinary)
- * que NO se haya descrito ya en IType
+ * Interface specifying methods exclusive to Scrabble Number types
+ * that must be implemented.
  */
 
 public interface INumber {
+
     /**
-     * Transforma el valor contenido a un Float
-     * @return Float
+     * Converts the current Scrabble Type into TFloat.
+     * @return new TFloat object
      */
     TFloat toTFloat();
 
-    INumber add(INumber num);
+    /**
+     * Double Dispatch.
+     * Response function of add by a TFloat object.
+     * Returns the result of the addition of both objects
+     * as a new INumber object.
+     * @param num TFloat Obj that started the addition.
+     * @return new INumber object with the result.
+     */
     INumber addByFloat(TFloat num);
+
+    /**
+     * Double Dispatch.
+     * Response function of add by a TInt object.
+     * Returns the result of the addition of both objects
+     * as a new INumber object.
+     * @param num TInt Obj that started the addition.
+     * @return new INumber object with the result.
+     */
     INumber addByInt(TInt num);
 
-    INumber sub(INumber num);
+    /**
+     * Double Dispatch.
+     * Response function of sub by a TFloat object.
+     * Returns the result of the subtraction of both objects
+     * as a new INumber object.
+     * @param num TFloat Obj that started the subtraction.
+     * @return new INumber object with the result.
+     */
     INumber subByFloat(TFloat num);
+
+    /**
+     * Double Dispatch.
+     * Response function of sub by a TInt object.
+     * Returns the result of the subtraction of both objects
+     * as a new INumber object.
+     * @param num TInt Obj that started the subtraction.
+     * @return new INumber object with the result.
+     */
     INumber subByInt(TInt num);
 
-    INumber mult(INumber num);
+
+    /**
+     * Double Dispatch.
+     * Response function of mult by a TFloat object.
+     * Returns the result of the multiplication of both objects
+     * as a new INumber object.
+     * @param num TFloat Obj that started the multiplication.
+     * @return new INumber object with the result.
+     */
     INumber multByFloat(TFloat num);
+
+    /**
+     * Double Dispatch.
+     * Response function of mult by a TInt object.
+     * Returns the result of the multiplication of both objects
+     * as a new INumber object.
+     * @param num TInt Obj that started the multiplication.
+     * @return new INumber object with the result.
+     */
     INumber multByInt(TInt num);
 
-    INumber div(INumber num);
+    /**
+     * Double Dispatch.
+     * Response function of div by a TFloat object.
+     * Returns the result of the division of both objects
+     * as a new INumber object.
+     * @param num TFloat Obj that started the division.
+     * @return new INumber object with the result.
+     */
     INumber divByFloat(TFloat num);
+
+    /**
+     * Double Dispatch.
+     * Response function of div by a TInt object.
+     * Returns the result of the division of both objects
+     * as a new INumber object.
+     * @param num TInt Obj that started the division.
+     * @return new INumber object with the result.
+     */
     INumber divByInt(TInt num);
 
 }

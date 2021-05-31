@@ -1,19 +1,25 @@
 package cl.uchile.dcc.scrabble.types;
 
-public class TString implements IType{
+import java.util.Objects;
+
+/**
+ * Class that represents a Scrabble String. Stores a Java String.
+ */
+public class TString implements ITypeOps{
     private String value;
 
     /**
-     * Retorna un Objeto TString que contiene
-     * el valor entregado.
-     * @param str String a almacenar
+     * Constructs a new TString object containing the
+     * String provided.
+     * @param str String to be stored
      */
     public TString (String str) {
         this.value = str;
     }
 
-    public TString add(IType stype){
-        return stype.addedByString(this);
+    @Override
+    public TString add(IType t){
+        return t.addedByString(this);
     }
 
     @Override
@@ -30,5 +36,10 @@ public class TString implements IType{
         else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(TString.class, this.value);
     }
 }

@@ -1,11 +1,17 @@
 package cl.uchile.dcc.scrabble.types;
 
-public class TFloat implements IType, INumber{
+import java.util.Objects;
+
+/**
+ * Class that represents a Scrabble Float. Stores a Java double.
+ */
+public class TFloat implements IType, INumberOps{
     private double value;
 
     /**
-     * Retorna un TFloat que contiene el valor entregado.
-     * @param arg double a almacenar
+     * Constructs a new TFloat object containing the
+     * double provided.
+     * @param arg double to be stored in the object.
      */
     public TFloat(double arg){
         this.value = arg;
@@ -28,12 +34,12 @@ public class TFloat implements IType, INumber{
 
     @Override
     public INumber addByFloat(TFloat num) {
-        return new TFloat(this.value + num.value);
+        return new TFloat(num.value + this.value);
     }
 
     @Override
     public INumber addByInt(TInt num) {
-        return new TFloat(this.value + Integer.parseInt(num.toString()));
+        return new TFloat(Integer.parseInt(num.toString()) + this.value);
     }
 
     @Override
@@ -43,12 +49,12 @@ public class TFloat implements IType, INumber{
 
     @Override
     public INumber subByFloat(TFloat num) {
-        return new TFloat(this.value - num.value);
+        return new TFloat(num.value - this.value);
     }
 
     @Override
     public INumber subByInt(TInt num) {
-        return new TFloat(this.value - Integer.parseInt(num.toString()));
+        return new TFloat(Integer.parseInt(num.toString()) - this.value);
     }
 
     @Override
@@ -58,12 +64,12 @@ public class TFloat implements IType, INumber{
 
     @Override
     public INumber multByFloat(TFloat num) {
-        return new TFloat(this.value * num.value);
+        return new TFloat(num.value * this.value);
     }
 
     @Override
     public INumber multByInt(TInt num) {
-        return new TFloat(this.value * Integer.parseInt(num.toString()));
+        return new TFloat(Integer.parseInt(num.toString()) * this.value);
     }
 
     @Override
@@ -90,5 +96,10 @@ public class TFloat implements IType, INumber{
         else {
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(TFloat.class, this.value);
     }
 }

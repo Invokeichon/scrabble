@@ -1,39 +1,78 @@
 package cl.uchile.dcc.scrabble.types;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TStringTest {
-    private String value = "Hola";
-    private String value2 = "Chao";
-    private TString tst;
+    private String str;
+    private TString tstring;
+    private int seed;
+    private Random rng;
 
     @BeforeEach
     void setUp() {
-        tst = new TString(value);
+        seed = new Random().nextInt();
+        rng = new Random(seed);
+        int strSize = rng.nextInt(20);
+        str = RandomStringUtils.random(strSize, 0, Character.MAX_CODE_POINT,
+                true, true, null, rng);
+        tstring = new TString(str);
     }
 
-    @Test
+    @RepeatedTest(20)
+    void constructorTest() {
+        TString expectedTString = new TString(str);
+        assertEquals(expectedTString, tstring);
+        assertEquals(expectedTString.hashCode(), tstring.hashCode());
+        String differentString;
+        do {
+            differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
+                    true, true, null, rng);
+        } while (differentString.equals(str));
+        TString differentTString = new TString(differentString);
+        assertNotEquals(differentTString, tstring);
+        assertNotEquals(differentString, tstring);
+    }
+
+    @RepeatedTest(20)
     void testToString() {
-        assertEquals(value, tst.toString());
+        String differentString;
+        do {
+            differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
+                    true, true, null, rng);
+        } while (differentString.equals(str));
+        assertEquals(str, tstring.toString());
+        assertNotEquals(differentString, tstring.toString());
     }
 
-    @Test
+    @RepeatedTest(20)
+    void testToTString() {
+        String differentString;
+        do {
+            differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
+                    true, true, null, rng);
+        } while (differentString.equals(str));
+        assertEquals(new TString(str), tstring.toTString());
+        assertNotEquals(new TString(differentString), tstring.toTString());
+    }
+
+
+
+    @RepeatedTest(20)
     void testAdd() {
-        TBool tstbool = new TBool(true);
-        assertEquals(new TString("Holatrue"), tst.add(tstbool));
-        TFloat tstfloat = new TFloat(10.324);
-        assertEquals(new TString("Hola10.324"), tst.add(tstfloat));
-        TInt tstint = new TInt(666);
-        assertEquals(new TString("Hola666"), tst.add(tstint));
+        String differentString;
+        do {
+            differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
+                    true, true, null, rng);
+        } while (differentString.equals(str));
+        TString addedTString = new TString(differentString);
+        assertEquals(new TString(str + differentString), tstring.add(addedTString));
     }
 
-    @Test
-    void testEquals() {
-        assertTrue(tst.equals(tst));
-        assertFalse(tst.equals(new TString(value2)));
-        assertFalse(tst.equals(new TBinary(value)));
-    }
 }

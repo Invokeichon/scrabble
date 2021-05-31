@@ -1,47 +1,98 @@
 package cl.uchile.dcc.scrabble.types;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TIntTest {
-    private int value = 12;
-    private int value2 = 666;
-    private String sval = "12";
-    private double fval = 12.0;
-    private TInt tst;
+    private int seed;
+    private Random rng;
+    private TInt tint;
+    private int value;
 
     @BeforeEach
     void setUp() {
-        tst = new TInt(value);
+        seed = new Random().nextInt();
+        rng = new Random(seed);
+        value = rng.nextInt();
+        tint = new TInt(value);
     }
 
-    @Test
+    @RepeatedTest(20)
+    void constructorTest() {
+        TInt expectedTInt = new TInt(value);
+        assertEquals(expectedTInt, tint);
+        assertEquals(expectedTInt.hashCode(), tint.hashCode());
+        int differentInt;
+        do {
+            differentInt = rng.nextInt();
+        } while (differentInt == value);
+        TInt differentTInt = new TInt(differentInt);
+        assertNotEquals(differentTInt, tint);
+        assertNotEquals(differentInt, tint);
+    }
+
+    @RepeatedTest(20)
     void testToString() {
-        assertEquals(sval, tst.toString());
+        int strSize = rng.nextInt(15);
+        String differentString;
+        do {differentString = RandomStringUtils.random(strSize,0,0,false,
+                true, null, rng);
+        } while (differentString.equals(String.valueOf(value)));
+        assertEquals(String.valueOf(value), tint.toString());
+        assertNotEquals(differentString, tint.toString());
     }
 
-    @Test
-    void toFloat() {
-        assertEquals(new TFloat(fval), tst.toTFloat());
+    @RepeatedTest(20)
+    void testToTString() {
+        int strSize = rng.nextInt(15);
+        String differentString;
+        do {differentString = RandomStringUtils.random(strSize,0,0,false,
+                true, null, rng);
+        } while (differentString.equals(String.valueOf(value)));
+        assertEquals(new TString(String.valueOf(value)), tint.toTString());
+        assertNotEquals(new TString(differentString), tint.toTString());
     }
 
-    @Test
-    void toInt() {
-        assertEquals(new TInt(value), tst.toTInt());
-        assertNotEquals(new TInt(value2), tst.toTInt());
+    @RepeatedTest(20)
+    void operationsTest() {
+        int rightOp;
+        rightOp = rng.nextInt();
+        TInt rightTInt = new TInt(rightOp);
+        assertEquals(new TInt(value + rightOp), tint.add(rightTInt));
+        assertEquals(new TInt(value - rightOp), tint.sub(rightTInt));
+        assertEquals(new TInt(value * rightOp), tint.mult(rightTInt));
+        assertEquals(new TInt(value / rightOp), tint.div(rightTInt));
     }
 
-    @Test
-    void toBinary() {
-        assertEquals("00000000000000000000000000000001", new TInt(1).toBinary());
+    @RepeatedTest(20)
+    void testToTFloat() {
+        double differentFloat;
+        do {
+            differentFloat = rng.nextDouble();
+        } while (differentFloat == value);
+        assertEquals(new TFloat(value), tint.toTFloat());
+        assertNotEquals(new TFloat(differentFloat), tint.toTFloat());
     }
 
-    @Test
-    void testEquals() {
-        assertFalse(tst.equals(sval));
-        assertFalse(tst.equals(new TInt(value2)));
-        assertTrue(tst.equals(tst));
+    @RepeatedTest(20)
+    void testToTInt() {
+        int differentInt;
+        do {
+            differentInt = rng.nextInt();
+        } while (differentInt == value);
+        assertEquals(new TInt(value), tint.toTInt());
+        assertNotEquals(new TInt(differentInt), tint.toTInt());
+        assertEquals(tint, tint.toTInt());
+    }
+
+    @RepeatedTest(20)
+    void testToTBinary() {
+        assertEquals(new TBinary(tint.toBinary()), tint.toTBinary());
     }
 }

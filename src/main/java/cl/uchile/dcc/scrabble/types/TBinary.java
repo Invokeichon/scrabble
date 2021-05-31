@@ -1,12 +1,18 @@
 package cl.uchile.dcc.scrabble.types;
 
-public class TBinary implements IType, INumber, ILogic, INonDouble {
+import java.util.Objects;
+
+/**
+ * Class that represents a Scrabble Binary. Stores a Java String composed of 0's and 1's
+ * to represent a binary.
+ */
+public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
     private String value;
 
     /**
-     * Constructor que retorna un objeto TBinary almacenando
-     * el valor entregado.
-     * @param binary binario a almacenar
+     * Constructs a new TBinary object containing the
+     * binary String provided.
+     * @param binary String representing a binary.
      */
     public TBinary (String binary) {
         this.value = binary;
@@ -24,10 +30,16 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
         return new TFloat(d);
     }
 
+    @Override
     public TInt toTInt() {
         return new TInt(this.toInt());
     }
 
+    /**
+     * Converts the String binary stored in the object
+     * into an int.
+     * @return int
+     */
     public int toInt() {
         String binary = this.value;
         if (bitToInt(binary.charAt(0)) == 0) {
@@ -36,6 +48,14 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
             return negativeBinToInt(binary);
         }
     }
+
+    /**
+     * Auxiliary method to toInt().
+     * Converts a String representing a
+     * negative binary into an int.
+     * @param binary negative binary String
+     * @return int
+     */
     private int negativeBinToInt(String binary) {
         int n = binary.length() - 1;
         int w = -bitToInt(binary.charAt(0)) * (int) Math.pow(2, n);
@@ -44,6 +64,14 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
         }
         return w;
     }
+
+    /**
+     * Auxiliary method to toInt().
+     * Converts a String representing a
+     * positive binary into an int.
+     * @param binary positive binary String
+     * @return int
+     */
     private int positiveBinToInt(String binary) {
         int w = 0;
         for (int i = binary.length() - 1, j = 0; i > 0; i--, j++) {
@@ -51,32 +79,45 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
         }
         return w;
     }
+
+    /**
+     * Auxiliary method to toInt().
+     * Converts a single bit of a Binary
+     * into an int.
+     * @param bit binary bit
+     * @return corresponding int
+     */
     private int bitToInt(char bit) {
         return bit == '0' ? 0 : 1;
     }
 
-    private void binExtend(int size) {
+    /**
+     * Auxiliary method to logical operations between TBinary.
+     * Extends the binary to the specified size.
+     * @param size length to be expanded to
+     * @return extended binary String
+     */
+    private TBinary binExtend(int size) {
         int len = this.value.length();
         if (size <= len) {
-            return;
+            return this;
         }
         char[] ext = new char[size];
         char sign = this.value.charAt(0);
         for (int i=0; i < size; i++) {
-            if(i < len) {
+            if(i < (size - len)) {
                 ext[i] = sign;
             }
             else {
-                ext[i] = this.value.charAt(i - len);
+                ext[i] = this.value.charAt(i - (size - len));
             }
         }
-        this.value = new String(ext);
+        return new TBinary(new String(ext));
     }
 
     @Override
-    public INumber add(INumber num) {
-        INonDouble tr = (INonDouble) num;
-        return (INumber) tr.addByBinary(this);
+    public INonDouble add(INonDouble num) {
+        return num.addByBinary(this);
     }
 
     @Override
@@ -96,9 +137,8 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
     }
 
     @Override
-    public INumber sub(INumber num) {
-        INonDouble tr = (INonDouble) num;
-        return (INumber) tr.subByBinary(this);
+    public INonDouble sub(INonDouble num) {
+        return num.subByBinary(this);
     }
 
     @Override
@@ -119,9 +159,8 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
 
 
     @Override
-    public INumber mult(INumber num) {
-        INonDouble tr = (INonDouble) num;
-        return (INumber) tr.multByBinary(this);
+    public INonDouble mult(INonDouble num) {
+        return num.multByBinary(this);
     }
 
     @Override
@@ -141,9 +180,8 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
     }
 
     @Override
-    public INumber div(INumber num) {
-        INonDouble tr = (INonDouble) num;
-        return (INumber) tr.divByBinary(this);
+    public INonDouble div(INonDouble num) {
+        return num.divByBinary(this);
     }
 
     @Override
@@ -162,11 +200,7 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
         return new TBinary(calc.toBinary());
     }
 
-
-    /**
-     * Retorna el valor almacenado como un binario (string de 0s y 1s)
-     * @return binary
-     */
+    @Override
     public TBinary toTBinary() {
         return new TBinary(this.value);
     }
@@ -196,25 +230,26 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
             if ( bool == '1' && bin[i] == '1') {
                 bin[i] = '1';
             }
-            else { bin[i] = '0'; }
+            else {
+                bin[i] = '0';
+            }
         }
         return new TBinary(String.valueOf(bin));
     }
 
     @Override
     public ILogic andByBinary(TBinary b) {
-        b.binExtend(this.value.length());
-        this.binExtend(b.value.length());
-        int size = Math.max(this.value.length(), b.value.length());
+        TBinary newB = b.binExtend(this.value.length());
+        TBinary newThis = this.binExtend(b.value.length());
+        int size = Math.max(newThis.value.length(), newB.value.length());
         char[] ret = new char[size];
         for (int i = 0; i < size; i++) {
-            if (b.value.charAt(i) == '1' && this.value.charAt(i) == '1') {
+            if (newB.value.charAt(i) == '1' && newThis.value.charAt(i) == '1') {
                 ret[i] = '1';
             }
             else {
                 ret[i] = '0';
             }
-
         }
         return new TBinary(new String(ret));
     }
@@ -229,28 +264,26 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
         char bool = boolToBin(Boolean.parseBoolean(b.toString()));
         char[] bin = this.value.toCharArray();
         for (int i = 0; i < bin.length ; i++ ) {
-            if ( bool == '1' || bin[i] == '1') {
+            if ( bool == '1') {
                 bin[i] = '1';
             }
-            else { bin[i] = '0'; }
         }
         return new TBinary(String.valueOf(bin));
     }
 
     @Override
     public ILogic orByBinary(TBinary b) {
-        b.binExtend(this.value.length());
-        this.binExtend(b.value.length());
-        int size = Math.max(this.value.length(), b.value.length());
+        TBinary newB = b.binExtend(this.value.length());
+        TBinary newThis = this.binExtend(b.value.length());
+        int size = Math.max(newThis.value.length(), newB.value.length());
         char[] ret = new char[size];
         for (int i = 0; i < size; i++) {
-            if (b.value.charAt(i) == '1' || this.value.charAt(i) == '1') {
+            if (newB.value.charAt(i) == '1' || newThis.value.charAt(i) == '1') {
                 ret[i] = '1';
             }
             else {
                 ret[i] = '0';
             }
-
         }
         return new TBinary(new String(ret));
     }
@@ -268,5 +301,10 @@ public class TBinary implements IType, INumber, ILogic, INonDouble {
         }
         String newval = String.valueOf(binary);
         return new TBinary(newval);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(TBinary.class, this.value);
     }
 }

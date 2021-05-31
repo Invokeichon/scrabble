@@ -1,11 +1,17 @@
 package cl.uchile.dcc.scrabble.types;
 
+import java.util.Objects;
+
+/**
+ * Class that represents a Scrabble Bool. Stores a Java boolean.
+ */
 public class TBool implements IType, ILogic{
     private boolean value;
 
     /**
-     * Retorna un objeto TBool con el valor (boolean) entregado.
-     * @param bool valor a almacenar
+     * Constructs a new TBool object containing the
+     * boolean provided.
+     * @param bool boolean to be stored in the object
      */
     public TBool (boolean bool) {
         this.value = bool;
@@ -17,8 +23,9 @@ public class TBool implements IType, ILogic{
     }
 
     /**
-     * Entrega el valor almacenado convertido a boolean
-     * @return boolean
+     * Returns a new TBool object storing the value of
+     * the caller object converted to boolean
+     * @return TBool object
      */
     public TBool toTBool() {
         return new TBool(this.value);
@@ -84,5 +91,10 @@ public class TBool implements IType, ILogic{
     @Override
     public TBool negate() {
         return new TBool(!this.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(TBool.class, this.value);
     }
 }
