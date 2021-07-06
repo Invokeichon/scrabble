@@ -1,15 +1,18 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.types.interfaces.IType;
+import cl.uchile.dcc.scrabble.types.interfaces.ITypeOps;
+
 import java.util.Objects;
 
 /**
  * Class that represents a Scrabble String. Stores a Java String.
  */
-public class TString implements ITypeOps{
+public class TString implements ITypeOps {
     private String value;
 
     /**
-     * Constructs a new TString object containing the
+     * Constructs a TypeFactory.createString object containing the
      * String provided.
      * @param str String to be stored
      */

@@ -1,15 +1,20 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
+import cl.uchile.dcc.scrabble.types.interfaces.INumber;
+import cl.uchile.dcc.scrabble.types.interfaces.INumberOps;
+import cl.uchile.dcc.scrabble.types.interfaces.IType;
+
 import java.util.Objects;
 
 /**
  * Class that represents a Scrabble Float. Stores a Java double.
  */
-public class TFloat implements IType, INumberOps{
+public class TFloat implements IType, INumberOps {
     private double value;
 
     /**
-     * Constructs a new TFloat object containing the
+     * Constructs a TypeFactory.createFloat object containing the
      * double provided.
      * @param arg double to be stored in the object.
      */
@@ -24,7 +29,7 @@ public class TFloat implements IType, INumberOps{
 
     @Override
     public TFloat toTFloat() {
-        return new TFloat(this.value);
+        return TypeFactory.createFloat(this.value);
     }
 
     @Override
@@ -34,12 +39,12 @@ public class TFloat implements IType, INumberOps{
 
     @Override
     public INumber addByFloat(TFloat num) {
-        return new TFloat(num.value + this.value);
+        return TypeFactory.createFloat(num.value + this.value);
     }
 
     @Override
     public INumber addByInt(TInt num) {
-        return new TFloat(Integer.parseInt(num.toString()) + this.value);
+        return TypeFactory.createFloat(Integer.parseInt(num.toString()) + this.value);
     }
 
     @Override
@@ -49,12 +54,12 @@ public class TFloat implements IType, INumberOps{
 
     @Override
     public INumber subByFloat(TFloat num) {
-        return new TFloat(num.value - this.value);
+        return TypeFactory.createFloat(num.value - this.value);
     }
 
     @Override
     public INumber subByInt(TInt num) {
-        return new TFloat(Integer.parseInt(num.toString()) - this.value);
+        return TypeFactory.createFloat(Integer.parseInt(num.toString()) - this.value);
     }
 
     @Override
@@ -64,12 +69,12 @@ public class TFloat implements IType, INumberOps{
 
     @Override
     public INumber multByFloat(TFloat num) {
-        return new TFloat(num.value * this.value);
+        return TypeFactory.createFloat(num.value * this.value);
     }
 
     @Override
     public INumber multByInt(TInt num) {
-        return new TFloat(Integer.parseInt(num.toString()) * this.value);
+        return TypeFactory.createFloat(Integer.parseInt(num.toString()) * this.value);
     }
 
     @Override
@@ -79,12 +84,12 @@ public class TFloat implements IType, INumberOps{
 
     @Override
     public INumber divByFloat(TFloat num) {
-        return new TFloat(num.value / this.value);
+        return TypeFactory.createFloat(num.value / this.value);
     }
 
     @Override
     public INumber divByInt(TInt num) {
-        return new TFloat(Integer.parseInt(num.toString()) / this.value);
+        return TypeFactory.createFloat(Integer.parseInt(num.toString()) / this.value);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -22,12 +23,12 @@ class TStringTest {
         int strSize = rng.nextInt(20);
         str = RandomStringUtils.random(strSize, 0, Character.MAX_CODE_POINT,
                 true, true, null, rng);
-        tstring = new TString(str);
+        tstring = TypeFactory.createString(str);
     }
 
     @RepeatedTest(20)
     void constructorTest() {
-        TString expectedTString = new TString(str);
+        TString expectedTString = TypeFactory.createString(str);
         assertEquals(expectedTString, tstring);
         assertEquals(expectedTString.hashCode(), tstring.hashCode());
         String differentString;
@@ -35,7 +36,7 @@ class TStringTest {
             differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
                     true, true, null, rng);
         } while (differentString.equals(str));
-        TString differentTString = new TString(differentString);
+        TString differentTString = TypeFactory.createString(differentString);
         assertNotEquals(differentTString, tstring);
         assertNotEquals(differentString, tstring);
     }
@@ -58,8 +59,8 @@ class TStringTest {
             differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
                     true, true, null, rng);
         } while (differentString.equals(str));
-        assertEquals(new TString(str), tstring.toTString());
-        assertNotEquals(new TString(differentString), tstring.toTString());
+        assertEquals(TypeFactory.createString(str), tstring.toTString());
+        assertNotEquals(TypeFactory.createString(differentString), tstring.toTString());
     }
 
 
@@ -71,8 +72,8 @@ class TStringTest {
             differentString = RandomStringUtils.random(rng.nextInt(20), 0, Character.MAX_CODE_POINT,
                     true, true, null, rng);
         } while (differentString.equals(str));
-        TString addedTString = new TString(differentString);
-        assertEquals(new TString(str + differentString), tstring.add(addedTString));
+        TString addedTString = TypeFactory.createString(differentString);
+        assertEquals(TypeFactory.createString(str + differentString), tstring.add(addedTString));
     }
 
 }

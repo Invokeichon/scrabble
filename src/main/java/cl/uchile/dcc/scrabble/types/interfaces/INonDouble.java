@@ -1,20 +1,23 @@
-package cl.uchile.dcc.scrabble.types;
+package cl.uchile.dcc.scrabble.types.interfaces;
+
+import cl.uchile.dcc.scrabble.types.TBinary;
+import cl.uchile.dcc.scrabble.types.TInt;
 
 /**
  * Interface that describes methods that all non-float numbers
  * must implement. (TInt, TBinary)
  */
-public interface INonDouble {
+public interface INonDouble extends IType {
 
     /**
      * Converts the current Scrabble Type into TInt.
-     * @return new TInt object
+     * @return TypeFactory.createInt object
      */
     TInt toTInt();
 
     /**
      * Converts the current Scrabble Type into TBinary.
-     * @return new TBinary object
+     * @return TypeFactory.createBinary object
      */
     TBinary toTBinary();
 

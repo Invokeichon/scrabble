@@ -1,5 +1,6 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -19,24 +20,24 @@ class TBoolTest {
         seed = new Random().nextInt();
         rng = new Random(seed);
         b = rng.nextBoolean();
-        tbool = new TBool(b);
+        tbool = TypeFactory.createBool(b);
     }
 
     @RepeatedTest(10)
     void constructorTest() {
-        TBool expectedTBool = new TBool(b);
+        TBool expectedTBool = TypeFactory.createBool(b);
         assertEquals(expectedTBool, tbool);
         assertEquals(expectedTBool.hashCode(), tbool.hashCode());
         boolean differentBool = !b;
-        TBool differentTBool = new TBool(differentBool);
+        TBool differentTBool = TypeFactory.createBool(differentBool);
         assertNotEquals(differentTBool, tbool);
         assertNotEquals(differentBool, tbool);
     }
 
     @RepeatedTest(10)
     void testToTString() {
-        assertEquals(new TString(String.valueOf(b)), tbool.toTString());
-        assertNotEquals(new TString(String.valueOf(!b)), tbool.toTString());
+        assertEquals(TypeFactory.createString(String.valueOf(b)), tbool.toTString());
+        assertNotEquals(TypeFactory.createString(String.valueOf(!b)), tbool.toTString());
     }
 
     @RepeatedTest(10)
@@ -48,22 +49,22 @@ class TBoolTest {
     @RepeatedTest(10)
     void testNegate(){
         assertEquals(tbool, tbool.negate().negate());
-        assertEquals(new TBool(!b), tbool.negate());
+        assertEquals(TypeFactory.createBool(!b), tbool.negate());
         assertNotEquals(tbool, tbool.negate());
     }
 
     @RepeatedTest(10)
     void toTBool() {
-        assertEquals(new TBool(b), tbool.toTBool());
+        assertEquals(TypeFactory.createBool(b), tbool.toTBool());
         assertEquals(tbool, tbool.toTBool());
     }
 
     @RepeatedTest(10)
     void operationsTest() {
         boolean rightOp = rng.nextBoolean();
-        TBool rightTBool = new TBool(rightOp);
-        assertEquals(new TBool(b || rightOp), tbool.or(rightTBool));
-        assertEquals(new TBool(b && rightOp), tbool.and(rightTBool));
+        TBool rightTBool = TypeFactory.createBool(rightOp);
+        assertEquals(TypeFactory.createBool(b || rightOp), tbool.or(rightTBool));
+        assertEquals(TypeFactory.createBool(b && rightOp), tbool.and(rightTBool));
     }
 
 }

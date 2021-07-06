@@ -1,49 +1,47 @@
-package cl.uchile.dcc.scrabble.types;
+package cl.uchile.dcc.scrabble.types.interfaces;
+
+import cl.uchile.dcc.scrabble.types.interfaces.INonDouble;
 
 /**
- * Interface that describes operations between INumber types.
- * Extends from INumber.
+ * Interface that describes operations compatible with INonDouble types.
+ * Extends from INonDouble.
  */
-public interface INumberOps extends INumber{
+
+public interface INonDoubleOps extends INonDouble {
 
     /**
      * Double Dispatch implementation.
      * Calls the corresponding "response" add method
-     * of the num Object, that in turn returns the result of the operation
-     * stored in an INumber object.
+     * of the num Object, that in turn returns the result of the operation.
      * @param num Object that is being added
      * @return Result of the sum
      */
-    INumber add(INumber num);
+    INonDouble add(INonDouble num);
 
     /**
      * Double Dispatch implementation.
      * Calls the corresponding "response" sub method
-     * of the num Object, that in turn returns the result of the operation
-     * stored in an INumber object.
+     * of the num Object, that in turn returns the result of the operation.
      * @param num Object that is being subtracted
      * @return Result of the subtraction
      */
-    INumber sub(INumber num);
+    INonDouble sub(INonDouble num);
 
     /**
      * Double Dispatch implementation.
      * Calls the corresponding "response" mult method
-     * of the num Object, that in turn returns the result of the operation
-     * stored in an INumber object.
+     * of the num Object, that in turn returns the result of the operation.
      * @param num Object that is being multiplied
      * @return Result of the multiplication
      */
-    INumber mult(INumber num);
+    INonDouble mult(INonDouble num);
 
     /**
      * Double Dispatch implementation.
      * Calls the corresponding "response" div method
      * of the num Object, that in turn returns the result of the operation.
-     * stored in an INumber object.
      * @param num Object that is being divided
      * @return Result of the division
      */
-    INumber div(INumber num);
-
+    INonDouble div(INonDouble num);
 }

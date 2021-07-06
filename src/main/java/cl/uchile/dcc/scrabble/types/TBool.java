@@ -1,15 +1,19 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
+import cl.uchile.dcc.scrabble.types.interfaces.ILogic;
+import cl.uchile.dcc.scrabble.types.interfaces.IType;
+
 import java.util.Objects;
 
 /**
  * Class that represents a Scrabble Bool. Stores a Java boolean.
  */
-public class TBool implements IType, ILogic{
+public class TBool implements IType, ILogic {
     private boolean value;
 
     /**
-     * Constructs a new TBool object containing the
+     * Constructs a TypeFactory.createBool object containing the
      * boolean provided.
      * @param bool boolean to be stored in the object
      */
@@ -23,12 +27,12 @@ public class TBool implements IType, ILogic{
     }
 
     /**
-     * Returns a new TBool object storing the value of
+     * Returns a TypeFactory.createBool object storing the value of
      * the caller object converted to boolean
      * @return TBool object
      */
     public TBool toTBool() {
-        return new TBool(this.value);
+        return TypeFactory.createBool(this.value);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class TBool implements IType, ILogic{
 
     @Override
     public ILogic andByBool(TBool b) {
-        return new TBool(this.value && b.value);
+        return TypeFactory.createBool(this.value && b.value);
     }
 
     @Override
@@ -62,7 +66,7 @@ public class TBool implements IType, ILogic{
             }
             else { bin[i] = '0'; }
         }
-        return new TBinary(String.valueOf(bin));
+        return TypeFactory.createBinary(String.valueOf(bin));
     }
 
     @Override
@@ -72,7 +76,7 @@ public class TBool implements IType, ILogic{
 
     @Override
     public ILogic orByBool(TBool b) {
-        return new TBool(this.value || b.value);
+        return TypeFactory.createBool(this.value || b.value);
     }
 
     @Override
@@ -85,12 +89,12 @@ public class TBool implements IType, ILogic{
             }
             else { bin[i] = '0'; }
         }
-        return new TBinary(String.valueOf(bin));
+        return TypeFactory.createBinary(String.valueOf(bin));
     }
 
     @Override
     public TBool negate() {
-        return new TBool(!this.value);
+        return TypeFactory.createBool(!this.value);
     }
 
     @Override

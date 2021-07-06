@@ -1,10 +1,12 @@
-package cl.uchile.dcc.scrabble.types;
+package cl.uchile.dcc.scrabble.types.interfaces;
+
+import cl.uchile.dcc.scrabble.types.interfaces.IType;
 
 /**
  * Interface that describes operations between IType objects.
  * Extends from IType.
  */
-public interface ITypeOps extends IType{
+public interface ITypeOps extends IType {
 
     /**
      * Double Dispatch implementation.
