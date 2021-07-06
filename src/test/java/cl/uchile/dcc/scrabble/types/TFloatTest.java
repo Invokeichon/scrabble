@@ -1,5 +1,6 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -20,19 +21,19 @@ class TFloatTest {
         seed = new Random().nextInt();
         rng = new Random(seed);
         dbl = rng.nextDouble();
-        tfloat = new TFloat(dbl);
+        tfloat = TypeFactory.createFloat(dbl);
     }
 
     @RepeatedTest(20)
     void constructorTest() {
-        TFloat expectedTFloat = new TFloat(dbl);
+        TFloat expectedTFloat = TypeFactory.createFloat(dbl);
         assertEquals(expectedTFloat, tfloat);
         assertEquals(expectedTFloat.hashCode(), tfloat.hashCode());
         double differentDouble;
         do {
             differentDouble = rng.nextDouble();
         } while (differentDouble == dbl);
-        TFloat differentTFloat = new TFloat(differentDouble);
+        TFloat differentTFloat = TypeFactory.createFloat(differentDouble);
         assertNotEquals(differentTFloat, tfloat);
         assertNotEquals(differentDouble, tfloat);
     }
@@ -55,19 +56,19 @@ class TFloatTest {
         do {differentString = RandomStringUtils.random(strSize,0,0,false,
                 true, null, rng);
         } while (differentString.equals(String.valueOf(dbl)));
-        assertEquals(new TString(String.valueOf(dbl)), tfloat.toTString());
-        assertNotEquals(new TString(differentString), tfloat.toTString());
+        assertEquals(TypeFactory.createString(String.valueOf(dbl)), tfloat.toTString());
+        assertNotEquals(TypeFactory.createString(differentString), tfloat.toTString());
     }
 
     @RepeatedTest(20)
     void operationsTest() {
         double rightOp;
         rightOp = rng.nextDouble();
-        TFloat rightTFloat = new TFloat(rightOp);
-        assertEquals(new TFloat(dbl + rightOp), tfloat.add(rightTFloat));
-        assertEquals(new TFloat(dbl - rightOp), tfloat.sub(rightTFloat));
-        assertEquals(new TFloat(dbl * rightOp), tfloat.mult(rightTFloat));
-        assertEquals(new TFloat(dbl / rightOp), tfloat.div(rightTFloat));
+        TFloat rightTFloat = TypeFactory.createFloat(rightOp);
+        assertEquals(TypeFactory.createFloat(dbl + rightOp), tfloat.add(rightTFloat));
+        assertEquals(TypeFactory.createFloat(dbl - rightOp), tfloat.sub(rightTFloat));
+        assertEquals(TypeFactory.createFloat(dbl * rightOp), tfloat.mult(rightTFloat));
+        assertEquals(TypeFactory.createFloat(dbl / rightOp), tfloat.div(rightTFloat));
 
     }
 
@@ -77,8 +78,8 @@ class TFloatTest {
         do {
             differentFloat = rng.nextDouble();
         } while (differentFloat == dbl);
-        assertEquals(new TFloat(dbl), tfloat.toTFloat());
-        assertNotEquals(new TFloat(differentFloat), tfloat.toTFloat());
+        assertEquals(TypeFactory.createFloat(dbl), tfloat.toTFloat());
+        assertNotEquals(TypeFactory.createFloat(differentFloat), tfloat.toTFloat());
     }
 
 }

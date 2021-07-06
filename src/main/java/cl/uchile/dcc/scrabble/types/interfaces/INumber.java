@@ -1,15 +1,18 @@
-package cl.uchile.dcc.scrabble.types;
+package cl.uchile.dcc.scrabble.types.interfaces;
+
+import cl.uchile.dcc.scrabble.types.TFloat;
+import cl.uchile.dcc.scrabble.types.TInt;
 
 /**
  * Interface specifying methods exclusive to Scrabble Number types
  * that must be implemented.
  */
 
-public interface INumber {
+public interface INumber extends IType {
 
     /**
      * Converts the current Scrabble Type into TFloat.
-     * @return new TFloat object
+     * @return TypeFactory.createFloat object
      */
     TFloat toTFloat();
 

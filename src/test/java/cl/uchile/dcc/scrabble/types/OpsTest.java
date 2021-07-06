@@ -1,5 +1,6 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -31,33 +32,33 @@ class OpsTest {
         int strSize = rng.nextInt(20);
         str = RandomStringUtils.random(strSize, 0, Character.MAX_CODE_POINT,
                 true, true, null, rng);
-        tstring = new TString(str);
+        tstring = TypeFactory.createString(str);
 
         b = rng.nextBoolean();
-        tbool = new TBool(b);
+        tbool = TypeFactory.createBool(b);
 
         dbl = rng.nextDouble();
-        tfloat = new TFloat(dbl);
+        tfloat = TypeFactory.createFloat(dbl);
 
         integer = rng.nextInt();
-        tint = new TInt(integer);
+        tint = TypeFactory.createInt(integer);
 
         char[] bins = {'0', '1'};
         int binSize;
         do { binSize= rng.nextInt(32); } while (binSize == 0 || binSize == 1);
         bin = RandomStringUtils.random(binSize, 0, 0,
                 false, true, bins, rng);
-        tbinary = new TBinary(bin);
+        tbinary = TypeFactory.createBinary(bin);
 
     }
 
     @RepeatedTest(20)
     void add() {
         // TString adding all other types
-        assertEquals(new TString(str + b), tstring.add(tbool));
-        assertEquals(new TString(str + dbl), tstring.add(tfloat));
-        assertEquals(new TString(str + integer), tstring.add(tint));
-        assertEquals(new TString(str + bin), tstring.add(tbinary));
+        assertEquals(TypeFactory.createString(str + b), tstring.add(tbool));
+        assertEquals(TypeFactory.createString(str + dbl), tstring.add(tfloat));
+        assertEquals(TypeFactory.createString(str + integer), tstring.add(tint));
+        assertEquals(TypeFactory.createString(str + bin), tstring.add(tbinary));
 
         /*
         TFloat adding other numbers.
@@ -70,12 +71,12 @@ class OpsTest {
                 Double.parseDouble(tfloat.add(tbinary).toString()), 1.0E9);
 
         // TInt adding other numbers (TInt.add(TFloat) returns TFloat)
-        assertEquals(new TFloat(integer + dbl), tint.add(tfloat));
-        assertEquals(new TInt(integer + tbinary.toInt()), tint.add(tbinary));
+        assertEquals(TypeFactory.createFloat(integer + dbl), tint.add(tfloat));
+        assertEquals(TypeFactory.createInt(integer + tbinary.toInt()), tint.add(tbinary));
 
         // TBinary adding other numbers (conversion will be used through TInt)
-        TInt tr = new TInt(tbinary.toInt() + integer);
-        assertEquals(new TBinary(tr.toBinary()), tbinary.add(tint));
+        TInt tr = TypeFactory.createInt(tbinary.toInt() + integer);
+        assertEquals(TypeFactory.createBinary(tr.toBinary()), tbinary.add(tint));
 
     }
 
@@ -92,12 +93,12 @@ class OpsTest {
                 Double.parseDouble(tfloat.sub(tbinary).toString()), 1.0E9);
 
         // TInt subtracting other numbers (TInt.sub(TFloat) returns TFloat)
-        assertEquals(new TFloat(integer - dbl), tint.sub(tfloat));
-        assertEquals(new TInt(integer - tbinary.toInt()), tint.sub(tbinary));
+        assertEquals(TypeFactory.createFloat(integer - dbl), tint.sub(tfloat));
+        assertEquals(TypeFactory.createInt(integer - tbinary.toInt()), tint.sub(tbinary));
 
         // TBinary subtracting other numbers (conversion will be used through TInt)
-        TInt tr = new TInt(tbinary.toInt() - integer);
-        assertEquals(new TBinary(tr.toBinary()), tbinary.sub(tint));
+        TInt tr = TypeFactory.createInt(tbinary.toInt() - integer);
+        assertEquals(TypeFactory.createBinary(tr.toBinary()), tbinary.sub(tint));
     }
 
     @RepeatedTest(20)
@@ -113,27 +114,27 @@ class OpsTest {
                 Double.parseDouble(tfloat.mult(tbinary).toString()), 1.0E9);
 
         // TInt multiplying other numbers (TInt.mult(TFloat) returns TFloat)
-        assertEquals(new TFloat(integer * dbl), tint.mult(tfloat));
-        assertEquals(new TInt(integer * tbinary.toInt()), tint.mult(tbinary));
+        assertEquals(TypeFactory.createFloat(integer * dbl), tint.mult(tfloat));
+        assertEquals(TypeFactory.createInt(integer * tbinary.toInt()), tint.mult(tbinary));
 
         // TBinary multiplying other numbers (conversion will be used through TInt)
-        TInt tr = new TInt(tbinary.toInt() * integer);
-        assertEquals(new TBinary(tr.toBinary()), tbinary.mult(tint));
+        TInt tr = TypeFactory.createInt(tbinary.toInt() * integer);
+        assertEquals(TypeFactory.createBinary(tr.toBinary()), tbinary.mult(tint));
     }
 
     @RepeatedTest(20)
     void div() {
         if (integer == 0) {
             integer = 1;
-            tint = new TInt(integer);
+            tint = TypeFactory.createInt(integer);
         }
         if (dbl == 0) {
             dbl = 1;
-            tfloat = new TFloat(dbl);
+            tfloat = TypeFactory.createFloat(dbl);
         }
         if (tbinary.toInt() == 0) {
             bin = "00000000000000000000000000000001";
-            tbinary = new TBinary(bin);
+            tbinary = TypeFactory.createBinary(bin);
         }
         /*
         TFloat dividing other numbers.
@@ -146,12 +147,12 @@ class OpsTest {
                 Double.parseDouble(tfloat.div(tbinary).toString()), 1.0E9);
 
         // TInt dividing other numbers (TInt.div(TFloat) returns TFloat)
-        assertEquals(new TFloat(integer / dbl), tint.div(tfloat));
-        assertEquals(new TInt(integer / tbinary.toInt()), tint.div(tbinary));
+        assertEquals(TypeFactory.createFloat(integer / dbl), tint.div(tfloat));
+        assertEquals(TypeFactory.createInt(integer / tbinary.toInt()), tint.div(tbinary));
 
         // TBinary dividing other numbers (conversion will be used through TInt)
-        TInt tr = new TInt(tbinary.toInt() / integer);
-        assertEquals(new TBinary(tr.toBinary()), tbinary.div(tint));
+        TInt tr = TypeFactory.createInt(tbinary.toInt() / integer);
+        assertEquals(TypeFactory.createBinary(tr.toBinary()), tbinary.div(tint));
     }
 
     @RepeatedTest(20)
@@ -166,8 +167,8 @@ class OpsTest {
         else { // p == '0'
             result = bin;
         }
-        assertEquals(new TBinary(result), tbool.or(tbinary));
-        assertEquals(new TBinary(result), tbinary.or(tbool));
+        assertEquals(TypeFactory.createBinary(result), tbool.or(tbinary));
+        assertEquals(TypeFactory.createBinary(result), tbinary.or(tbool));
 
     }
 
@@ -183,7 +184,7 @@ class OpsTest {
             Arrays.fill(resArr, p);
             result = String.valueOf(resArr);
         }
-        assertEquals(new TBinary(result), tbool.and(tbinary));
-        assertEquals(new TBinary(result), tbinary.and(tbool));
+        assertEquals(TypeFactory.createBinary(result), tbool.and(tbinary));
+        assertEquals(TypeFactory.createBinary(result), tbinary.and(tbool));
     }
 }

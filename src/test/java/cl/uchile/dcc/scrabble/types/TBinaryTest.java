@@ -1,5 +1,6 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -24,12 +25,12 @@ class TBinaryTest {
         do {binSize= rng.nextInt(32);} while (binSize == 0 || binSize == 1);
         bin = RandomStringUtils.random(binSize, 0, 0,
                 false, true, bins, rng);
-        tbinary = new TBinary(bin);
+        tbinary = TypeFactory.createBinary(bin);
     }
 
     @RepeatedTest(20)
     void constructorTest() {
-        var expectedTBinary = new TBinary (bin);
+        var expectedTBinary = TypeFactory.createBinary (bin);
         assertEquals(expectedTBinary, tbinary);
         assertEquals(expectedTBinary.hashCode(), tbinary.hashCode(), "Hash Codes don't match.");
         int diffSize;
@@ -39,7 +40,7 @@ class TBinaryTest {
             differentBin = RandomStringUtils.random(diffSize, 0, 0,
                     false, true, bins, rng);
         } while (differentBin.equals(bin) || diffSize == 0 || diffSize == 1);
-        TBinary differentTBinary = new TBinary(differentBin);
+        TBinary differentTBinary = TypeFactory.createBinary(differentBin);
         assertNotEquals(differentTBinary, tbinary);
         assertNotEquals(differentBin, tbinary);
     }
@@ -62,8 +63,8 @@ class TBinaryTest {
         do {differentString = RandomStringUtils.random(binSize,0,Character.MAX_CODE_POINT,false,
                 true, null, rng);
         } while (differentString.equals(bin));
-        assertEquals(new TString(bin), tbinary.toTString());
-        assertNotEquals(new TString(differentString), tbinary.toTString());
+        assertEquals(TypeFactory.createString(bin), tbinary.toTString());
+        assertNotEquals(TypeFactory.createString(differentString), tbinary.toTString());
     }
 
     @RepeatedTest(20)
@@ -71,8 +72,8 @@ class TBinaryTest {
         double tr = tbinary.toInt();
         double diff;
         do {diff = rng.nextDouble();} while (diff == tr);
-        assertEquals(new TFloat(tr), tbinary.toTFloat());
-        assertNotEquals(new TFloat(diff), tbinary.toTFloat());
+        assertEquals(TypeFactory.createFloat(tr), tbinary.toTFloat());
+        assertNotEquals(TypeFactory.createFloat(diff), tbinary.toTFloat());
 
     }
 
@@ -81,8 +82,8 @@ class TBinaryTest {
         int tr = tbinary.toInt();
         int diff;
         do {diff = rng.nextInt();} while (diff == tr);
-        assertEquals(new TInt(tr), tbinary.toTInt());
-        assertNotEquals(new TInt(diff), tbinary.toTInt());
+        assertEquals(TypeFactory.createInt(tr), tbinary.toTInt());
+        assertNotEquals(TypeFactory.createInt(diff), tbinary.toTInt());
     }
 
     @RepeatedTest(20)
@@ -92,8 +93,8 @@ class TBinaryTest {
         do {differentString = RandomStringUtils.random(binSize,0,0,false,
                 true, bins, rng);
         } while (differentString.equals(bin));
-        assertEquals(new TBinary(bin), tbinary.toTBinary());
-        assertNotEquals(new TBinary(differentString), tbinary.toTBinary());
+        assertEquals(TypeFactory.createBinary(bin), tbinary.toTBinary());
+        assertNotEquals(TypeFactory.createBinary(differentString), tbinary.toTBinary());
     }
 
     @RepeatedTest(20)
@@ -110,27 +111,25 @@ class TBinaryTest {
         do {rightOp = RandomStringUtils.random(binSize,0,0,false,
                 true, bins, rng);
         } while (rightOp.equals(bin));
-        TBinary rightTBinary = new TBinary(rightOp);
-        TInt addT = new TInt(tbinary.toInt() + rightTBinary.toInt());
-        assertEquals(new TBinary(addT.toBinary()), tbinary.add(rightTBinary));
-        TInt subT = new TInt(tbinary.toInt() - rightTBinary.toInt());
-        assertEquals(new TBinary(subT.toBinary()), tbinary.sub(rightTBinary));
-        TInt multT = new TInt(tbinary.toInt() * rightTBinary.toInt());
-        assertEquals(new TBinary(multT.toBinary()), tbinary.mult(rightTBinary));
+        TBinary rightTBinary = TypeFactory.createBinary(rightOp);
+        TInt addT = TypeFactory.createInt(tbinary.toInt() + rightTBinary.toInt());
+        assertEquals(TypeFactory.createBinary(addT.toBinary()), tbinary.add(rightTBinary));
+        TInt subT = TypeFactory.createInt(tbinary.toInt() - rightTBinary.toInt());
+        assertEquals(TypeFactory.createBinary(subT.toBinary()), tbinary.sub(rightTBinary));
+        TInt multT = TypeFactory.createInt(tbinary.toInt() * rightTBinary.toInt());
+        assertEquals(TypeFactory.createBinary(multT.toBinary()), tbinary.mult(rightTBinary));
         if (rightTBinary.toInt() == 0) {
             rightOp = "001";
-            rightTBinary = new TBinary("001");
+            rightTBinary = TypeFactory.createBinary("001");
         }
-        TInt divT = new TInt(tbinary.toInt() / rightTBinary.toInt());
-        assertEquals(new TBinary(divT.toBinary()), tbinary.div(rightTBinary));
+        TInt divT = TypeFactory.createInt(tbinary.toInt() / rightTBinary.toInt());
+        assertEquals(TypeFactory.createBinary(divT.toBinary()), tbinary.div(rightTBinary));
 
         // OR y AND
         bin = tbinary.toString();
         int blength = bin.length();
         int rlength = rightOp.length();
         int retSize = Math.max(blength, rlength);
-        System.out.println(bin);
-        System.out.println(rightOp);
         if (blength < rlength){
             char sign = bin.charAt(0);
             char[] ext = new char[retSize];
@@ -159,9 +158,6 @@ class TBinaryTest {
 
         char[] retOr = new char[retSize];
         char[] retAnd = new char[retSize];
-        System.out.println(bin);
-        System.out.println(rightOp);
-        System.out.println("----------------");
         for (int j = 0; j < retSize; j++) {
             if (bin.charAt(j) == '1' && rightOp.charAt(j) == '1') {
                 retAnd[j] = '1';
@@ -179,8 +175,8 @@ class TBinaryTest {
             }
         }
 
-        assertEquals(new TBinary(String.valueOf(retOr)), tbinary.or(rightTBinary));
-        assertEquals(new TBinary(String.valueOf(retAnd)), tbinary.and(rightTBinary));
+        assertEquals(TypeFactory.createBinary(String.valueOf(retOr)), tbinary.or(rightTBinary));
+        assertEquals(TypeFactory.createBinary(String.valueOf(retAnd)), tbinary.and(rightTBinary));
 
     }
 

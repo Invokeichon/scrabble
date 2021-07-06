@@ -32,5 +32,13 @@ They are the following types:
 
 These types can transform into each other (with restrictions), and operate with each other (following mostly how their respective Java values operate).
 
+*Tarea 2*
+
+Additionally, an Abstract Syntaxis Tree (AST) has been implemented, in order to represent instructions and visualize the program more easily.
+
+These ASTs are able to use the types and operations described before (through _Adapter_ classes for each type), with the added bonus that the construction of an AST does *not* care if operations/transformations are invalid or not. _However_, upon evaluation of the tree, any invalid operations will result in a _null_.
+
+IType creations are now optimized through an implementation of the _Flyweight_ pattern, in order to avoid unnecessary memory usage. A Factory has been implemented for each type in order to accomplish this, however a general-use _TypeFactory_ is available with methods for all type creations. Use individual factories if you wish to instance new "memory" for a certain type.
+
 
 

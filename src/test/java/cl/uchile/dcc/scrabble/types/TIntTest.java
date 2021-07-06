@@ -1,5 +1,6 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -20,19 +21,19 @@ class TIntTest {
         seed = new Random().nextInt();
         rng = new Random(seed);
         value = rng.nextInt();
-        tint = new TInt(value);
+        tint = TypeFactory.createInt(value);
     }
 
     @RepeatedTest(20)
     void constructorTest() {
-        TInt expectedTInt = new TInt(value);
+        TInt expectedTInt = TypeFactory.createInt(value);
         assertEquals(expectedTInt, tint);
         assertEquals(expectedTInt.hashCode(), tint.hashCode());
         int differentInt;
         do {
             differentInt = rng.nextInt();
         } while (differentInt == value);
-        TInt differentTInt = new TInt(differentInt);
+        TInt differentTInt = TypeFactory.createInt(differentInt);
         assertNotEquals(differentTInt, tint);
         assertNotEquals(differentInt, tint);
     }
@@ -55,19 +56,19 @@ class TIntTest {
         do {differentString = RandomStringUtils.random(strSize,0,0,false,
                 true, null, rng);
         } while (differentString.equals(String.valueOf(value)));
-        assertEquals(new TString(String.valueOf(value)), tint.toTString());
-        assertNotEquals(new TString(differentString), tint.toTString());
+        assertEquals(TypeFactory.createString(String.valueOf(value)), tint.toTString());
+        assertNotEquals(TypeFactory.createString(differentString), tint.toTString());
     }
 
     @RepeatedTest(20)
     void operationsTest() {
         int rightOp;
         rightOp = rng.nextInt();
-        TInt rightTInt = new TInt(rightOp);
-        assertEquals(new TInt(value + rightOp), tint.add(rightTInt));
-        assertEquals(new TInt(value - rightOp), tint.sub(rightTInt));
-        assertEquals(new TInt(value * rightOp), tint.mult(rightTInt));
-        assertEquals(new TInt(value / rightOp), tint.div(rightTInt));
+        TInt rightTInt = TypeFactory.createInt(rightOp);
+        assertEquals(TypeFactory.createInt(value + rightOp), tint.add(rightTInt));
+        assertEquals(TypeFactory.createInt(value - rightOp), tint.sub(rightTInt));
+        assertEquals(TypeFactory.createInt(value * rightOp), tint.mult(rightTInt));
+        assertEquals(TypeFactory.createInt(value / rightOp), tint.div(rightTInt));
     }
 
     @RepeatedTest(20)
@@ -76,8 +77,8 @@ class TIntTest {
         do {
             differentFloat = rng.nextDouble();
         } while (differentFloat == value);
-        assertEquals(new TFloat(value), tint.toTFloat());
-        assertNotEquals(new TFloat(differentFloat), tint.toTFloat());
+        assertEquals(TypeFactory.createFloat(value), tint.toTFloat());
+        assertNotEquals(TypeFactory.createFloat(differentFloat), tint.toTFloat());
     }
 
     @RepeatedTest(20)
@@ -86,13 +87,13 @@ class TIntTest {
         do {
             differentInt = rng.nextInt();
         } while (differentInt == value);
-        assertEquals(new TInt(value), tint.toTInt());
-        assertNotEquals(new TInt(differentInt), tint.toTInt());
+        assertEquals(TypeFactory.createInt(value), tint.toTInt());
+        assertNotEquals(TypeFactory.createInt(differentInt), tint.toTInt());
         assertEquals(tint, tint.toTInt());
     }
 
     @RepeatedTest(20)
     void testToTBinary() {
-        assertEquals(new TBinary(tint.toBinary()), tint.toTBinary());
+        assertEquals(TypeFactory.createBinary(tint.toBinary()), tint.toTBinary());
     }
 }

@@ -1,5 +1,8 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
+import cl.uchile.dcc.scrabble.types.interfaces.*;
+
 import java.util.Objects;
 
 /**
@@ -10,7 +13,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
     private String value;
 
     /**
-     * Constructs a new TBinary object containing the
+     * Constructs a TypeFactory.createBinary object containing the
      * binary String provided.
      * @param binary String representing a binary.
      */
@@ -27,12 +30,12 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
     public TFloat toTFloat() {
         int i = this.toInt();
         double d = i;
-        return new TFloat(d);
+        return TypeFactory.createFloat(d);
     }
 
     @Override
     public TInt toTInt() {
-        return new TInt(this.toInt());
+        return TypeFactory.createInt(this.toInt());
     }
 
     /**
@@ -112,7 +115,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
                 ext[i] = this.value.charAt(i - (size - len));
             }
         }
-        return new TBinary(new String(ext));
+        return TypeFactory.createBinary(new String(ext));
     }
 
     @Override
@@ -122,18 +125,18 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
 
     @Override
     public INumber addByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) + (double) this.toInt());
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) + (double) this.toInt());
     }
 
     @Override
     public INumber addByInt(TInt num) {
-        return new TInt(Integer.parseInt(num.toString()) + this.toInt());
+        return TypeFactory.createInt(Integer.parseInt(num.toString()) + this.toInt());
     }
 
     @Override
     public INonDouble addByBinary(TBinary num) {
-        TInt calc = new TInt(num.toInt() + this.toInt());
-        return new TBinary(calc.toBinary());
+        TInt calc = TypeFactory.createInt(num.toInt() + this.toInt());
+        return TypeFactory.createBinary(calc.toBinary());
     }
 
     @Override
@@ -143,18 +146,18 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
 
     @Override
     public INumber subByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) - (double) this.toInt());
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) - (double) this.toInt());
     }
 
     @Override
     public INumber subByInt(TInt num) {
-        return new TInt(Integer.parseInt(num.toString()) - this.toInt());
+        return TypeFactory.createInt(Integer.parseInt(num.toString()) - this.toInt());
     }
 
     @Override
     public INonDouble subByBinary(TBinary num) {
-        TInt calc = new TInt(num.toInt() - this.toInt());
-        return new TBinary(calc.toBinary());
+        TInt calc = TypeFactory.createInt(num.toInt() - this.toInt());
+        return TypeFactory.createBinary(calc.toBinary());
     }
 
 
@@ -165,18 +168,18 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
 
     @Override
     public INumber multByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) * (double) this.toInt());
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) * (double) this.toInt());
     }
 
     @Override
     public INumber multByInt(TInt num) {
-        return new TInt(Integer.parseInt(num.toString()) * this.toInt());
+        return TypeFactory.createInt(Integer.parseInt(num.toString()) * this.toInt());
     }
 
     @Override
     public INonDouble multByBinary(TBinary num) {
-        TInt calc = new TInt(num.toInt() * this.toInt());
-        return new TBinary(calc.toBinary());
+        TInt calc = TypeFactory.createInt(num.toInt() * this.toInt());
+        return TypeFactory.createBinary(calc.toBinary());
     }
 
     @Override
@@ -186,23 +189,23 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
 
     @Override
     public INumber divByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) / (double) this.toInt());
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) / (double) this.toInt());
     }
 
     @Override
     public INumber divByInt(TInt num) {
-        return new TInt(Integer.parseInt(num.toString()) / this.toInt());
+        return TypeFactory.createInt(Integer.parseInt(num.toString()) / this.toInt());
     }
 
     @Override
     public INonDouble divByBinary(TBinary num) {
-        TInt calc = new TInt(num.toInt() / this.toInt());
-        return new TBinary(calc.toBinary());
+        TInt calc = TypeFactory.createInt(num.toInt() / this.toInt());
+        return TypeFactory.createBinary(calc.toBinary());
     }
 
     @Override
     public TBinary toTBinary() {
-        return new TBinary(this.value);
+        return TypeFactory.createBinary(this.value);
     }
 
 
@@ -234,7 +237,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
                 bin[i] = '0';
             }
         }
-        return new TBinary(String.valueOf(bin));
+        return TypeFactory.createBinary(String.valueOf(bin));
     }
 
     @Override
@@ -251,7 +254,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
                 ret[i] = '0';
             }
         }
-        return new TBinary(new String(ret));
+        return TypeFactory.createBinary(new String(ret));
     }
 
     @Override
@@ -268,7 +271,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
                 bin[i] = '1';
             }
         }
-        return new TBinary(String.valueOf(bin));
+        return TypeFactory.createBinary(String.valueOf(bin));
     }
 
     @Override
@@ -285,7 +288,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
                 ret[i] = '0';
             }
         }
-        return new TBinary(new String(ret));
+        return TypeFactory.createBinary(new String(ret));
     }
 
     @Override
@@ -300,7 +303,7 @@ public class TBinary implements IType, INumber, ILogic, INonDoubleOps {
             }
         }
         String newval = String.valueOf(binary);
-        return new TBinary(newval);
+        return TypeFactory.createBinary(newval);
     }
 
     @Override

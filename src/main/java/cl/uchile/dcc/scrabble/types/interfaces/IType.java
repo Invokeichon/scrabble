@@ -1,9 +1,12 @@
-package cl.uchile.dcc.scrabble.types;
+package cl.uchile.dcc.scrabble.types.interfaces;
+
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
+import cl.uchile.dcc.scrabble.types.TString;
 
 /**
  * Interface specifying the methods that ANY Scrabble Type must implement.
  */
-public interface IType {
+public interface IType{
 
     /**
      * Returns the value stored in the Scrabble Type
@@ -13,24 +16,24 @@ public interface IType {
     String toString();
 
     /**
-     * Returns a new TString Object that is a
+     * Returns a TypeFactory.createString Object that is a
      * transformation of the current Object.
-     * @return new TString
+     * @return TypeFactory.createString
      */
     default TString toTString() {
-        return new TString(this.toString());
+        return TypeFactory.createString(this.toString());
     }
 
     /**
      * Double Dispatch.
      * Response function of add by a TString object.
      * Returns the result of the addition of both objects
-     * as a new TString object.
+     * as a TypeFactory.createString object.
      * @param str TString Obj that started the addition.
-     * @return new TString Obj with the result.
+     * @return TypeFactory.createString Obj with the result.
      */
     default TString addedByString (TString str) {
-        return new TString(str.toString() + this.toString());
+        return TypeFactory.createString(str.toString() + this.toString());
     }
     /**
      * Checks if the objects are equal, through class instance and value.
@@ -43,4 +46,5 @@ public interface IType {
      * @return hashcode
      */
     int hashCode();
+
 }

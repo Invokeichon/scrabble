@@ -1,11 +1,14 @@
-package cl.uchile.dcc.scrabble.types;
+package cl.uchile.dcc.scrabble.types.interfaces;
+
+import cl.uchile.dcc.scrabble.types.TBinary;
+import cl.uchile.dcc.scrabble.types.TBool;
 
 /**
  * Interface that describes methods that all types
  * with logical behavior must implement.
  * Operations are integrated into the interface, as they are symmetrical.
  */
-public interface ILogic {
+public interface ILogic extends IType {
 
     /**
      * Converts a boolean into a binary equivalent.

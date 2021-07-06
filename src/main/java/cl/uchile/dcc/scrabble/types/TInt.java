@@ -1,15 +1,21 @@
 package cl.uchile.dcc.scrabble.types;
 
+import cl.uchile.dcc.scrabble.flyweight.TypeFactory;
+import cl.uchile.dcc.scrabble.types.interfaces.INonDouble;
+import cl.uchile.dcc.scrabble.types.interfaces.INumber;
+import cl.uchile.dcc.scrabble.types.interfaces.INumberOps;
+import cl.uchile.dcc.scrabble.types.interfaces.IType;
+
 import java.util.Objects;
 
 /**
  * Class that represents a Scrabble Int. Stores a Java int.
  */
-public class TInt implements IType, INumberOps, INonDouble{
+public class TInt implements IType, INumberOps, INonDouble {
     private int value;
 
     /**
-     * Constructs a new TInt object containing the
+     * Constructs a TypeFactory.createInt object containing the
      * int provided.
      * @param arg int to be stored in the object.
      */
@@ -47,9 +53,9 @@ public class TInt implements IType, INumberOps, INonDouble{
      * @return negative binary String
      */
     private String twosComplement(String b) {
-        TBinary tr = new TBinary(b);
+        TBinary tr = TypeFactory.createBinary(b);
         tr = tr.negate();
-        return tr.addByInt(new TInt(1)).toString();
+        return tr.addByInt(TypeFactory.createInt(1)).toString();
     }
 
     /**
@@ -78,7 +84,7 @@ public class TInt implements IType, INumberOps, INonDouble{
     @Override
     public TFloat toTFloat() {
         double dbl = value;
-        return new TFloat(dbl);
+        return TypeFactory.createFloat(dbl);
     }
 
     @Override
@@ -88,18 +94,18 @@ public class TInt implements IType, INumberOps, INonDouble{
 
     @Override
     public INumber addByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) + this.value);
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) + this.value);
     }
 
     @Override
     public INumber addByInt(TInt num) {
-        return new TInt(num.value + this.value);
+        return TypeFactory.createInt(num.value + this.value);
     }
 
     @Override
     public INonDouble addByBinary(TBinary num) {
-        TInt tr = new TInt(num.toInt() + this.value);
-        return new TBinary(tr.toBinary());
+        TInt tr = TypeFactory.createInt(num.toInt() + this.value);
+        return TypeFactory.createBinary(tr.toBinary());
     }
 
     @Override
@@ -109,18 +115,18 @@ public class TInt implements IType, INumberOps, INonDouble{
 
     @Override
     public INumber subByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) - this.value);
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) - this.value);
     }
 
     @Override
     public INumber subByInt(TInt num) {
-        return new TInt(num.value - this.value);
+        return TypeFactory.createInt(num.value - this.value);
     }
 
     @Override
     public INonDouble subByBinary(TBinary num) {
-        TInt tr = new TInt(num.toInt() - this.value);
-        return new TBinary(tr.toBinary());
+        TInt tr = TypeFactory.createInt(num.toInt() - this.value);
+        return TypeFactory.createBinary(tr.toBinary());
     }
 
     @Override
@@ -130,18 +136,18 @@ public class TInt implements IType, INumberOps, INonDouble{
 
     @Override
     public INumber multByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) * this.value);
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) * this.value);
     }
 
     @Override
     public INumber multByInt(TInt num) {
-        return new TInt(num.value * this.value);
+        return TypeFactory.createInt(num.value * this.value);
     }
 
     @Override
     public INonDouble multByBinary(TBinary num) {
-        TInt tr = new TInt(num.toInt() * this.value);
-        return new TBinary(tr.toBinary());
+        TInt tr = TypeFactory.createInt(num.toInt() * this.value);
+        return TypeFactory.createBinary(tr.toBinary());
     }
 
     @Override
@@ -151,28 +157,28 @@ public class TInt implements IType, INumberOps, INonDouble{
 
     @Override
     public INumber divByFloat(TFloat num) {
-        return new TFloat(Float.parseFloat(num.toString()) / this.value);
+        return TypeFactory.createFloat(Float.parseFloat(num.toString()) / this.value);
     }
 
     @Override
     public INumber divByInt(TInt num) {
-        return new TInt(num.value / this.value);
+        return TypeFactory.createInt(num.value / this.value);
     }
 
     @Override
     public INonDouble divByBinary(TBinary num) {
-        TInt tr = new TInt(num.toInt() / this.value);
-        return new TBinary(tr.toBinary());
+        TInt tr = TypeFactory.createInt(num.toInt() / this.value);
+        return TypeFactory.createBinary(tr.toBinary());
     }
 
     @Override
     public TInt toTInt() {
-        return new TInt(this.value);
+        return TypeFactory.createInt(this.value);
     }
 
     @Override
     public TBinary toTBinary() {
-        return new TBinary(this.toBinary());
+        return TypeFactory.createBinary(this.toBinary());
     }
 
     @Override
